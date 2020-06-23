@@ -1,8 +1,12 @@
-﻿using System;
+﻿using ScoreSystem.Services.AdminManage;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Web;
 using System.Web.Http;
 
 namespace ScoreSystem.Controllers.AreaManage
@@ -17,8 +21,8 @@ namespace ScoreSystem.Controllers.AreaManage
 
         // GET api/<controller>/5
         public string Get(int id)
-        {
-            return "value";
+        {   
+            return new UserInfo().GetAuthFromCookie(HttpContext.Current);
         }
 
         // POST api/<controller>

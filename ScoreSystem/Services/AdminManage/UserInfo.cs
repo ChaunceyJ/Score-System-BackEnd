@@ -1,7 +1,9 @@
 ﻿using ScoreSystem.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Web;
 
 namespace ScoreSystem.Services.AdminManage
@@ -33,19 +35,32 @@ namespace ScoreSystem.Services.AdminManage
             }
         }
 
-        public int GetUserIdFromCookie(string cookies)
+        public int GetUserIdFromCookie(HttpContext context)
         {
-            return 0;
+            HttpCookie cookie = context.Request.Cookies["UserInfo"];
+            string name = cookie["id"];
+            return int.Parse(name);
         }
 
-        public string GetAuthFromCookie(string cookies)
+        public string GetAuthFromCookie(HttpContext context)
         {
-            return auth[3];
+            HttpCookie cookie = context.Request.Cookies["UserInfo"];
+            string name = cookie["type"];
+            return auth[int.Parse(name)];
         }
 
-        public string GenerateCookie(int type, int user_id)
+        public HttpCookie GenerateCookie(int type, int user_id)
         {
-            return "";
+            HttpCookie cookie = new HttpCookie("UserInfo");//初使化并设置Cookie的名称
+            cookie.HttpOnly = true;      //设置cookie只有服务器才能访问
+            cookie.Values["id"] = user_id.ToString();       //设置cookie的值
+            cookie.Values["type"] = type.ToString();
+            return cookie;
+        }
+
+        public void test()
+        {
+            
         }
     }
 }
