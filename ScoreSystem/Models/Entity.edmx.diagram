@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6bffe668483e45339b97d55959f21945" Name="Diagram1">
+        <EntityTypeShape EntityType="sorce_systemModel.are_population_record" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sorce_systemModel.area_admin" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="sorce_systemModel.criminal" Width="1.5" PointX="7.5" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="sorce_systemModel.exam_record" Width="1.5" PointX="7.5" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="sorce_systemModel.group_admin" Width="1.5" PointX="5.25" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="sorce_systemModel.prison_score" Width="1.5" PointX="9.75" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="sorce_systemModel.root_admin" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="sorce_systemModel.rule" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sorce_systemModel.work" Width="1.5" PointX="5.25" PointY="15.125" IsExpanded="true" />
+        <AssociationConnector Association="sorce_systemModel.sdsad" ManuallyRouted="false" />
+        <AssociationConnector Association="sorce_systemModel.C4" ManuallyRouted="false" />
+        <AssociationConnector Association="sorce_systemModel.adare" ManuallyRouted="false" />
+        <AssociationConnector Association="sorce_systemModel.tygy" ManuallyRouted="false" />
+        <AssociationConnector Association="sorce_systemModel.C1" ManuallyRouted="false" />
+        <AssociationConnector Association="sorce_systemModel.C456" ManuallyRouted="false" />
+        <AssociationConnector Association="sorce_systemModel.ad" ManuallyRouted="false" />
+        <AssociationConnector Association="sorce_systemModel.work1" ManuallyRouted="false" />
+        <AssociationConnector Association="sorce_systemModel.C2" ManuallyRouted="false" />
+        <AssociationConnector Association="sorce_systemModel.C3" ManuallyRouted="false" />
+        <AssociationConnector Association="sorce_systemModel.C5" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
