@@ -32,23 +32,40 @@ namespace ScoreSystem.Services.AreaManage
             return num > 0;
         }
 
-        public bool HasGroup(int id)
+        public int GetId(int gi)
         {
-            var result = db.group_admin.AsEnumerable().Where(p => p.group_id_in_area == id);
+            return db.group_admin.Where(p => p.group_id_in_area == gi).ToArray()[0].id_group_admin;
+        }
+
+        public bool HasGroup(int id_in_area, int area_id)
+        {
+            var result = db.group_admin.AsEnumerable()
+                .Where(p => p.group_id_in_area == id_in_area && p.id_area_admin == area_id);
             return result.ToArray().Length > 0;
 
         }
 
+        public group_admin GetAdmin(int id)
+        {
+            return db.group_admin.Find(id);
+        }
+
+        public int GetGroupName(int gi)
+        {
+            return (int)db.group_admin.Find(gi).group_id_in_area;
+        }
+
         public bool ChangeGroupid(int id_group, int groupid_in_area)
         {
-            int num;
+            bool num;
             try
             {
                 group_admin cr = db.group_admin.Find(id_group);
                 if (cr != null)
                 {
                     cr.group_id_in_area = groupid_in_area;
-                    num = db.SaveChanges();
+                    db.SaveChanges();
+                    num = true;
                 }
                 else
                 {
@@ -59,7 +76,7 @@ namespace ScoreSystem.Services.AreaManage
             {
                 throw e;
             }
-            return num > 0;
+            return num;
         }
 
         public bool DeleteOne(int id)
@@ -83,6 +100,15 @@ namespace ScoreSystem.Services.AreaManage
             var result = db.criminals.AsEnumerable().Where(p => p.id_group == id);
             return result.ToArray().Length > 0;
 
+        }
+
+        public Array GetGroupInfo(int skip, int limit, int admin)
+        {
+            var pageData = db.group_admin.Where(p => p.id_area_admin == admin)
+                .OrderBy(b => b.id_group_admin)
+                .Skip(skip)
+                .Take(limit);
+            return pageData.ToArray();
         }
     }
 }

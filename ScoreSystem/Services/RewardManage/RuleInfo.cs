@@ -1,4 +1,5 @@
-﻿using ScoreSystem.Models;
+﻿
+using ScoreSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Metadata.Edm;
@@ -13,17 +14,18 @@ namespace ScoreSystem.Services.RewardManage
 
         public bool AddOne(int _article_id, int _num_id, string _context)
         {
-            int num;
+            bool num;
             try
             {
                 db.rules.Add(new rule { article_id = _article_id, num_id = _num_id, context = _context });
-                num = db.SaveChanges();
+               db.SaveChanges();
+                num = true;
             }
             catch (Exception e)
             {
                 throw e;
             }
-            return num > 0;
+            return num;
         }
 
         public bool HasName(int ar, int num)
@@ -33,16 +35,27 @@ namespace ScoreSystem.Services.RewardManage
 
         }
 
+        public int GetId(string _area_name)
+        {
+            return db.rules.Where(p => p.context.Equals(_area_name)).ToArray()[0].id_rule;
+        }
+
+        public string GetContent(int id)
+        {
+            return db.rules.Find(id).context;
+        }
+
         public bool ChangeContext(int id, string context)
         {
-            int num;
+            bool num;
             try
             {
                 rule cr = db.rules.Find(id);
                 if (cr != null)
                 {
                     cr.context = context;
-                    num = db.SaveChanges();
+                    db.SaveChanges();
+                    num = true;
                 }
                 else
                 {
@@ -53,29 +66,39 @@ namespace ScoreSystem.Services.RewardManage
             {
                 throw e;
             }
-            return num > 0;
+            return num;
         }
 
         public bool DeleteOne(int id)
         {
-            int num;
+            bool num;
             try
             {
                 rule wk = db.rules.Find(id);
                 db.rules.Remove(wk);
-                num = db.SaveChanges();
+                 db.SaveChanges();
+                num = true;
             }
             catch (Exception e)
             {
                 throw e;
             }
-            return num > 0;
+            return num;
         }
 
         public bool HasUsed(int id)
         {
             var result = db.exam_record.AsEnumerable().Where(p => p.id_rule == id);
             return result.ToArray().Length > 0;
+        }
+
+        public Array GetRuleInfo(int skip, int limit)
+        {
+            var pageData = db.rules
+                .OrderBy(b => b.article_id).ThenBy(b => b.num_id)
+                .Skip(skip)
+                .Take(limit);
+            return pageData.ToArray();
         }
     }
 }

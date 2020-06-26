@@ -11,33 +11,37 @@ namespace ScoreSystem.Services.RewardManage
     {
         private sorce_systemEntities db = new sorce_systemEntities();
 
-        public bool AddOne(int _id_crimal, int _rule, DateTime dateTime, int _group, int _score, string _kind, string _detail)
+        public exam_record AddOne(int _id_crimal, int _rule, DateTime dateTime, int _group, int _score)
         {
-            int num;
+            exam_record ner = new exam_record
+            {
+                id_crimial = _id_crimal,
+                id_rule = _rule,
+                exam_date = dateTime,
+                group_check_id = _group,
+                score = _score
+            };
             try
             {
-                db.exam_record.Add(new exam_record
-                {
-                    id_crimial = _id_crimal,
-                    id_rule = _rule,
-                    exam_date = dateTime,
-                    group_check_id = _group,
-                    score = _score,
-                    kind = _kind,
-                    detail = _detail
-                });
-                num = db.SaveChanges();
+                db.exam_record.Add(ner);
+                 db.SaveChanges();
+               
             }
             catch (Exception e)
             {
                 throw e;
             }
-            return num > 0;
+            return ner;
+        }
+
+        public exam_record GetExamRecord(int id)
+        {
+            return db.exam_record.Find(id);
         }
 
         public bool ChangeContext(int id_exam, int _rule, DateTime dateTime, int _group, int _score, string _kind, string _detail)
         {
-            int num;
+            bool num;
             try
             {
                 exam_record cr = db.exam_record.Find(id_exam);
@@ -64,7 +68,8 @@ namespace ScoreSystem.Services.RewardManage
                     {
                         cr.detail = _detail;
                     }
-                    num = db.SaveChanges();
+                   db.SaveChanges();
+                    num = true;
                 }
                 else
                 {
@@ -75,35 +80,37 @@ namespace ScoreSystem.Services.RewardManage
             {
                 throw e;
             }
-            return num > 0;
+            return num;
         }
 
         public bool DeleteOne(int id)
         {
-            int num;
+            bool num;
             try
             {
                 exam_record wk = db.exam_record.Find(id);
                 db.exam_record.Remove(wk);
-                num = db.SaveChanges();
+                 db.SaveChanges();
+                num = true;
             }
             catch (Exception e)
             {
                 throw e;
             }
-            return num > 0;
+            return num;
         }
 
         public bool AreaAdminCheck(int id_record, int are_admin)
         {
-            int num;
+            bool num;
             try
             {
                 exam_record cr = db.exam_record.Find(id_record);
                 if (cr != null)
                 {
                     cr.area_check_id = are_admin;
-                    num = db.SaveChanges();
+                    db.SaveChanges();
+                    num = true;
                 }
                 else
                 {
@@ -114,19 +121,20 @@ namespace ScoreSystem.Services.RewardManage
             {
                 throw e;
             }
-            return num > 0;
+            return num;
         }
 
         public bool RootAdminCheck(int id_record, int rootAdmin)
         {
-            int num;
+            bool num;
             try
             {
                 exam_record cr = db.exam_record.Find(id_record);
                 if (cr != null)
                 {
                     cr.root_check_id = rootAdmin;
-                    num = db.SaveChanges();
+                    db.SaveChanges();
+                    num = true;
                 }
                 else
                 {
@@ -137,7 +145,30 @@ namespace ScoreSystem.Services.RewardManage
             {
                 throw e;
             }
-            return num > 0;
+            return num;
+        }
+
+        public Array GetRewardInfo(int skip, int limit, int grouo_id, DateTime start, DateTime end)
+        {
+            var pageData = db.exam_record.Where(p => p.group_check_id == grouo_id && p.exam_date >= start && p.exam_date <= end)
+                .OrderBy(b => b.exam_date)
+                .Skip(skip)
+                .Take(limit);
+            return pageData.ToArray();
+        }
+
+        public Array GetRewardInfo(int skip, int limit, int grouo_id)
+        {
+            var pageData = db.exam_record.Where(p => p.group_check_id == grouo_id)
+                .OrderBy(b => b.exam_date)
+                .Skip(skip)
+                .Take(limit);
+            return pageData.ToArray();
+        }
+
+        public int GetSize(int grouo_id)
+        {
+            return db.exam_record.Where(p => p.group_check_id == grouo_id).Count();
         }
     }
 }

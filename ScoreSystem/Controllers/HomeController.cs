@@ -9,7 +9,7 @@ namespace ScoreSystem.Controllers
 {
     public class HomeController : Controller
     {
-        [CustAuthorize("vip")]
+        // [CustAuthorize("vip")]
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";

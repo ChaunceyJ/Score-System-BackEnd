@@ -26,6 +26,43 @@ namespace ScoreSystem.Services.AreaManage
             return num > 0;
         }
 
+        public int GetId(string _area_name)
+        {
+            return db.works.Where(p => p.context.Equals(_area_name)).ToArray()[0].id_work;
+        }
+
+        public string GetContent(int id)
+        {
+            return db.works.Find(id).context;
+        }
+
+        public bool ChangeContent(int id, string s)
+        {
+            bool num;
+            try
+            {
+                work cr = db.works.Find(id);
+                if (cr != null)
+                {
+                    if (s != null && !s.Equals(cr.context))
+                    {
+                        cr.context = s;
+                    }
+                    db.SaveChanges();
+                    num = true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return num;
+        }
+
         public bool DeleteOne(int id)
         {
             int num;
@@ -44,9 +81,18 @@ namespace ScoreSystem.Services.AreaManage
 
         public bool HasUsed(int id)
         {
-            var result = db.works.AsEnumerable().Where(p => p.id_work == id);
+            var result = db.criminals.AsEnumerable().Where(p => p.id_work == id);
             return result.ToArray().Length > 0;
 
+        }
+
+        public Array GetWorkInfo(int skip, int limit)
+        {
+            var pageData = db.works
+                .OrderBy(b => b.id_work)
+                .Skip(skip)
+                .Take(limit);
+            return pageData.ToArray();
         }
     }
 }

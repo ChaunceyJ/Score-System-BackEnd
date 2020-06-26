@@ -12,13 +12,13 @@ namespace ScoreSystem.Services.AdminManage
 
         public bool ChangeAreaAdmin(int _areaid, string _name, string _password, string _user_number, int _admin)
         {
-            int num;
+            bool num;
             try
             {
                 area_admin cr = db.area_admin.Find(_areaid);
                 if (cr != null)
                 {
-                    if(_name != null && _name.Equals(cr.name))
+                    if(_name != null && !_name.Equals(cr.name))
                     {
                         cr.name = _name;
                     }
@@ -26,15 +26,16 @@ namespace ScoreSystem.Services.AdminManage
                     {
                         cr.password = _password;
                     }
-                    if(_user_number != null && _user_number.Equals(cr.user_number))
+                    if(_user_number != null && !_user_number.Equals(cr.user_number))
                     {
                         cr.user_number = _user_number;
                     }
-                    if(_admin != cr.id_root_admin)
+                    if(_admin != 0 && _admin != cr.id_root_admin)
                     {
                         cr.id_root_admin = _admin;
                     }
-                    num = db.SaveChanges();
+                        db.SaveChanges();
+                    num = true;
                 }
                 else
                 {
@@ -45,7 +46,7 @@ namespace ScoreSystem.Services.AdminManage
             {
                 throw e;
             }
-            return num > 0;
+            return num;
         }
 
         public bool HasAreaUserName(string userNumber)
@@ -80,13 +81,13 @@ namespace ScoreSystem.Services.AdminManage
 
         public bool ChangeGroupAdmin(int _groupid, string _name, string _password, string _user_number, int _areaAdmin)
         {
-            int num;
+            bool num;
             try
             {
                 group_admin cr = db.group_admin.Find(_groupid);
                 if (cr != null)
                 {
-                    if (_name != null && _name.Equals(cr.name))
+                    if (_name != null && !_name.Equals(cr.name))
                     {
                         cr.name = _name;
                     }
@@ -94,15 +95,16 @@ namespace ScoreSystem.Services.AdminManage
                     {
                         cr.password = _password;
                     }
-                    if (_user_number != null && _user_number.Equals(cr.user_number))
+                    if (_user_number != null && !_user_number.Equals(cr.user_number))
                     {
                         cr.user_number = _user_number;
                     }
-                    if (_areaAdmin != cr.id_area_admin)
+                    if (_areaAdmin != 0 && _areaAdmin != cr.id_area_admin)
                     {
                         cr.id_area_admin = _areaAdmin;
                     }
-                    num = db.SaveChanges();
+                    db.SaveChanges();
+                    num = true;
                 }
                 else
                 {
@@ -113,7 +115,7 @@ namespace ScoreSystem.Services.AdminManage
             {
                 throw e;
             }
-            return num > 0;
+            return num;
         }
 
         public bool HasGroupUserName(string userNumber)
@@ -178,6 +180,18 @@ namespace ScoreSystem.Services.AdminManage
                 throw e;
             }
             return num > 0;
+        }
+        public string GetRootAdminName(int id)
+        {
+            return db.root_admin.Find(id).name;
+        }
+        public string GetAreaAdminName(int id)
+        {
+            return db.area_admin.Find(id).name;
+        }
+        public string GetGroupAdminName(int id)
+        {
+            return db.group_admin.Find(id).name;
         }
     }
 }

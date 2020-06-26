@@ -27,11 +27,22 @@ namespace ScoreSystem.Services.AreaManage
             }
             catch (Exception e)
             {
+                System.Diagnostics.Debug.Assert(false, e.Message);
                 throw e;
             }
             return num > 0;
         }
 
+        public int GetId(string _area_name)
+        {
+            return db.area_admin.Where(p => p.area_name.Equals(_area_name)).ToArray()[0].id_area_admin;
+        }
+
+        public string GetAreaName(int id)
+        {
+            return db.area_admin.Find(id).area_name;
+        }
+        
         public bool HasAreaName(string name)
         {
             var result = db.area_admin.AsEnumerable().Where(p => p.area_name.Equals(name));
@@ -40,14 +51,15 @@ namespace ScoreSystem.Services.AreaManage
 
         public bool ChangeAreaName(int id_area, string _name)
         {
-            int num;
+            bool num;
             try
             {
                 area_admin cr = db.area_admin.Find(id_area);
                 if (cr != null)
                 {
                     cr.area_name = _name;
-                    num = db.SaveChanges();
+                    db.SaveChanges();
+                    num = true;
                 }
                 else
                 {
@@ -56,9 +68,10 @@ namespace ScoreSystem.Services.AreaManage
             }
             catch (Exception e)
             {
+                num = false;
                 throw e;
             }
-            return num > 0;
+            return num;
         }
 
         public bool DeleteOne(int id)
@@ -72,7 +85,7 @@ namespace ScoreSystem.Services.AreaManage
             }
             catch (Exception e)
             {
-                throw e;
+                throw e; 
             }
             return num > 0;
         }
@@ -82,6 +95,15 @@ namespace ScoreSystem.Services.AreaManage
             var result = db.group_admin.AsEnumerable().Where(p => p.id_area_admin == id);
             return result.ToArray().Length > 0;
 
+        }
+
+        public Array GetAreaInfo(int skip, int limit, int admin)
+        {
+            var pageData = db.area_admin.Where(p => p.id_root_admin == admin)
+                .OrderBy(b => b.id_area_admin)
+                .Skip(skip)
+                .Take(limit);
+            return pageData.ToArray();
         }
     }
 }
