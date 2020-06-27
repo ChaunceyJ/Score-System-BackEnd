@@ -2,3 +2,4 @@
 packages/
 ScoreSystem/bin/
 ScoreSystem/obj/
+*.DS_Store
